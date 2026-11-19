@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>전병호 | 영상심리학 · 융합예술 · AI·소프트웨어</title>
+  <style>
+    :root {
+      --bg-primary: #0b101b;
+      --bg-secondary: #121a2b;
+      --bg-card: #172136;
+      --text-primary: #f1f5f9;
+      --text-secondary: #9fb0c7;
+      --accent-gold: #d4af37;
+      --accent-gold-soft: rgba(212, 175, 55, 0.14);
+      --border-subtle: rgba(148, 163, 184, 0.18);
+      --max-width: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11, 16, 27, 0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0.95rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.02em;
+      color: var(--accent-gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent-gold);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Sections */
+    section {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 4.5rem 1.5rem;
+    }
+
+    .section-header {
+      margin-bottom: 2.2rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      color: var(--text-secondary);
+      max-width: 680px;
+    }
+
+    /* Hero */
+    .hero {
+      padding-top: 5rem;
+      padding-bottom: 4.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-eyebrow {
+      color: var(--accent-gold);
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4.5vw, 3.1rem);
+      line-height: 1.25;
+      font-weight: 800;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      max-width: 740px;
+      margin-bottom: 2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.35rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-gold);
+      color: #0b101b;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    /* Convergence Pillars */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(212, 175, 55, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Filter & Projects */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .filter-btn {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--accent-gold-soft);
+      color: var(--accent-gold);
+      border-color: var(--accent-gold);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-badge {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent-gold);
+      background: var(--accent-gold-soft);
+      padding: 0.2rem 0.65rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    /* Interactive Cinema Therapy Lab */
+    .therapy-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.75rem;
+    }
+
+    .mood-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .mood-btn {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      padding: 0.55rem 1.05rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mood-btn.active,
+    .mood-btn:hover {
+      border-color: var(--accent-gold);
+      background: var(--accent-gold-soft);
+      color: var(--accent-gold);
+    }
+
+    .prescription-panel {
+      background: var(--bg-card);
+      border-left: 4px solid var(--accent-gold);
+      border-radius: 8px;
+      padding: 1.4rem;
+    }
+
+    .prescription-panel h3 {
+      font-size: 1.2rem;
+      color: var(--accent-gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .prescription-meta {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .prescription-detail {
+      margin-bottom: 0.85rem;
+      font-size: 0.96rem;
+    }
+
+    .prescription-question {
+      margin-top: 1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-secondary);
+      padding: 2.2rem 1.5rem;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .menu-toggle {
+        display: inline-block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0.9rem;
+        padding: 1rem 1.5rem 1.3rem;
+        background: var(--bg-secondary);
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <a href="#top" class="brand">전병호 · JEON BYUNGHO</a>
+      <button type="button" class="menu-toggle" id="menuToggle" aria-label="메뉴 열기">☰</button>
+      <nav class="nav-links" id="navLinks">
+        <a href="#convergence">융합 철학</a>
+        <a href="#projects">연구·제작</a>
+        <a href="#therapy">영화치료 성찰</a>
+        <a href="#contact">연락</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-eyebrow">영상심리학 · 영화치료 · AI 영화 · 드론 영상 · 소프트웨어 공학</div>
+      <h1>공학의 정밀함, 예술의 시선,<br />인문학의 치유가 만나는 자리</h1>
+      <p>
+        국립대학교 영화영상학과에서 30년간 영상심리학, 심리상담, 영화교육 및 영화치료를 연구·강의해 왔으며,
+        전자·컴퓨터공학 기반과 드론·생성형 AI 제작 역량을 결합해 인간의 내면과 자연의 서사를 탐구합니다.
+      </p>
+      <div class="btn-group">
+        <a href="#projects" class="btn btn-primary">주요 프로젝트 보기</a>
+        <a href="#therapy" class="btn btn-secondary">영화치료 성찰 체험</a>
+      </div>
+    </section>
+
+    <section id="convergence">
+      <div class="section-header">
+        <span class="section-tag">Convergence Philosophy</span>
+        <h2 class="section-title">공학과 예술, 인문학의 통섭</h2>
+        <p class="section-desc">
+          기술은 표현의 경계를 넓히고, 영상심리학은 화면 이면의 무의식과 정서적 회복을 비춥니다.
+        </p>
+      </div>
+      <div class="pillars-grid">
+        <article class="card">
+          <h3>인문학 · 영상심리 &amp; 영화치료</h3>
+          <p>
+            방어기제, 융 분석심리학, 형태심리학, 인간동기이론을 바탕으로 영화 서사와 미장센이 자아 성찰과 정서적 치유로 이어지는 과정을 연구하고 강의합니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>예술 · 드론 &amp; AI 영상 서사</h3>
+          <p>
+            계단식 논과 자연 풍광을 담은 항공 드론 영상과 생성형 AI 영상·음악 워크플로우를 통합해 문학적 자연 다큐멘터리와 시각 예술을 제작합니다.
+          </p>
+        </article>
+        <article class="card">
+          <h3>공학 · 소프트웨어 &amp; AI 시스템</h3>
+          <p>
+            Python, TypeScript/React, GTP 기반 AI 엔진 설계 등 소프트웨어 개발 역량을 실무에 적용해 아카이브 관리, 자동화 도구, 지능형 시스템을 구현합니다.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-header">
+        <span class="section-tag">Works &amp; Research</span>
+        <h2 class="section-title">주요 연구 및 제작 활동</h2>
+        <p class="section-desc">관심 분야 버튼을 눌러 연구 교재, 영상 작업, 소프트웨어 프로젝트를 확인해 보세요.</p>
+      </div>
+
+      <div class="filter-bar" id="filterBar" role="tablist" aria-label="프로젝트 분야 필터">
+        <button type="button" class="filter-btn active" data-filter="all">전체</button>
+        <button type="button" class="filter-btn" data-filter="psychology">영상심리 &amp; 영화치료</button>
+        <button type="button" class="filter-btn" data-filter="cinema">AI 영화 &amp; 드론 예술</button>
+        <button type="button" class="filter-btn" data-filter="engineering">소프트웨어 &amp; AI 공학</button>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid"></div>
+    </section>
+
+    <section id="therapy">
+      <div class="section-header">
+        <span class="section-tag">Cinema Therapy Reflection</span>
+        <h2 class="section-title">정서 상태별 영화치료 성찰 노트</h2>
+        <p class="section-desc">
+          지금 느끼는 마음의 결을 선택하면 영화심리학적 관점의 작품 추천과 미장센·심리 기제 해설을 제공합니다.
+        </p>
+      </div>
+
+      <div class="therapy-box">
+        <div class="mood-buttons" id="moodButtons"></div>
+        <div class="prescription-panel" id="prescriptionPanel" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact">
+    <p><strong>전병호 (Jeon Byung-ho)</strong> · 명예교수 · 대전광역시</p>
+    <p style="margin-top: 0.35rem;">영상심리학 · 영화치료 · 드론 &amp; AI 영상 · 소프트웨어 융합 연구</p>
+  </footer>
+
+  <script>
+    (function () {
+      const PROJECTS = [
+        {
+          title: "대학 영화치료 및 영상심리 교재·강의 아카이브",
+          category: "psychology",
+          badge: "영상심리 & 영화치료",
+          summary:
+            "심리 방어기제, 분석심리학, 형태심리학을 영화 분석 및 상담 실습과 연결한 대학 교재 원고 및 강의 체계."
+        },
+        {
+          title: "용천 계단식 논 드론 다큐멘터리 & AI 뮤직비디오",
+          category: "cinema",
+          badge: "AI 영화 & 드론 예술",
+          summary:
+            "드론 항공 촬영과 생성형 AI 영상·음악 요소를 결합해 시간과 공간, 자연의 리듬을 담아낸 문학적 다큐멘터리 작업."
+        },
+        {
+          title: "PhotoArchive AI 데스크톱 관리 시스템",
+          category: "engineering",
+          badge: "소프트웨어 & AI 공학",
+          summary:
+            "Python과 React·TypeScript 기반으로 EXIF 메타데이터 분석, 기기 가져오기, 무선 업로드 기능을 통합한 사진 아카이브 앱."
+        },
+        {
+          title: "9×9 AI 바둑 엔진 & GTP 연동 실험",
+          category: "engineering",
+          badge: "소프트웨어 & AI 공학",
+          summary:
+            "AlphaGo Zero 아키텍처와 GTP 프로토콜을 기반으로 9×9 보드 탐색 및 대국 프로토콜을 검증하는 소프트웨어 프로젝트."
+        },
+        {
+          title: "고전 서사·미장센 방어기제 케이스 스터디",
+          category: "psychology",
+          badge: "영상심리 & 영화치료",
+          summary:
+            "시점 이동, 공간 프레임, 인물의 선택을 통해 투사·합리화·승화 등 심리 기제의 시각적 구현을 탐구하는 연구."
+        },
+        {
+          title: "생성형 영상 워크플로우 & 자동화 스킬 설계",
+          category: "cinema",
+          badge: "AI 영화 & 드론 예술",
+          summary:
+            "시나리오 분할, 쇼츠 연출, 편집 자동화 프롬프트 및 스킬 구조를 정교화하여 창작 효율을 높이는 제작 파이프라인."
+        }
+      ];
+
+      const MOOD_PRESCRIPTIONS = [
+        {
+          id: "overwhelmed",
+          label: "마음이 복잡하고 지칠 때",
+          film: "《마보로시(Maborosi, 1995)》",
+          mechanism: "애도와 수용 · 정적 미장센을 통한 정서적 정화(Catharsis)",
+          analysis:
+            "과도한 설명이나 극적 폭발 대신 자연광과 여백의 프레임을 길게 유지하며, 상실 이후에도 일상이 천천히 이어지는 감각을 관객이 스스로 호흡하게 만듭니다.",
+          question: "지금 내 삶에서 조급히 답을 내리려다 멈춰 세우지 못한 감정은 무엇일까요?"
+        },
+        {
+          id: "blocked",
+          label: "창작·결정의 문턱에서 막힐 때",
+          film: "《굿 윌 헌팅(Good Will Hunting, 1997)》",
+          mechanism: "방어기제(지성화·회피) 인식과 신뢰 관계 속 자기 개방",
+          analysis:
+            "지적 우월감과 방어적 태도로 상처를 가리던 인물이 진정성 있는 대화와 시선의 마주침 속에서 자신의 두려움과 마주하는 서사를 보여줍니다.",
+          question: "내가 스스로를 지키기 위해 사용하고 있는 가장 익숙한 방어 방식은 무엇인가요?"
+        },
+        {
+          id: "perfection",
+          label: "스스로를 지나치게 몰아붙일 때",
+          film: "《위플래시(Whiplash, 2014)》",
+          mechanism: "초자아의 가혹한 압박과 성취 욕구의 이면 탐색",
+          analysis:
+            "빠른 컷 편집과 타악기 사운드가 완벽주의의 긴장감을 극대화하며, 목표 집착이 인간관계와 내면의 균형에 미치는 파장을 날카롭게 드러냅니다.",
+          question: "내가 추구하는 성취의 기준은 진정한 내면의 열망인가요, 아니면 외부의 시선인가요?"
+        },
+        {
+          id: "perspective",
+          label: "시야를 넓히고 관점을 전환하고 싶을 때",
+          film: "《라쇼몽(Rashomon, 1950)》",
+          mechanism: "다중 시점(Perspectivism)과 자아 중심적 기억 재구성 성찰",
+          analysis:
+            "동일한 사건을 각기 다른 위치와 입장에서 증언하는 구조를 통해 인간 기억의 주관성과 자기합리화 구조를 입체적으로 성찰하게 합니다.",
+          question: "최근 갈등이나 고민에서 내가 당연하다고 믿었던 전제를 다른 시선으로 보면 어떻게 보일까요?"
+        }
+      ];
+
+      const projectsGrid = document.getElementById("projectsGrid");
+      const filterBar = document.getElementById("filterBar");
+      const moodButtons = document.getElementById("moodButtons");
+      const prescriptionPanel = document.getElementById("prescriptionPanel");
+      const menuToggle = document.getElementById("menuToggle");
+      const navLinks = document.getElementById("navLinks");
+
+      function renderProjects(filter) {
+        const filtered =
+          filter === "all"
+            ? PROJECTS
+            : PROJECTS.filter((item) => item.category === filter);
+
+        projectsGrid.innerHTML = filtered
+          .map(
+            (item) => `
+          <article class="card">
+            <span class="project-badge">${item.badge}</span>
+            <h3>${item.title}</h3>
+            <p>${item.summary}</p>
+          </article>
+        `
+          )
+          .join("");
+      }
+
+      function renderPrescription(moodId) {
+        const item =
+          MOOD_PRESCRIPTIONS.find((m) => m.id === moodId) || MOOD_PRESCRIPTIONS[0];
+
+        prescriptionPanel.innerHTML = `
+          <h3>${item.film}</h3>
+          <div class="prescription-meta">핵심 심리 기제: <strong>${item.mechanism}</strong></div>
+          <p class="prescription-detail">${item.analysis}</p>
+          <p class="prescription-question">성찰 질문: ${item.question}</p>
+        `;
+
+        document.querySelectorAll(".mood-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.mood === item.id);
+        });
+      }
+
+      filterBar.addEventListener("click", (event) => {
+        const btn = event.target.closest(".filter-btn");
+        if (!btn) return;
+        document.querySelectorAll(".filter-btn").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderProjects(btn.dataset.filter);
+      });
+
+      moodButtons.innerHTML = MOOD_PRESCRIPTIONS.map(
+        (m, idx) => `
+        <button type="button" class="mood-btn ${idx === 0 ? "active" : ""}" data-mood="${m.id}">
+          ${m.label}
+        </button>
+      `
+      ).join("");
+
+      moodButtons.addEventListener("click", (event) => {
+        const btn = event.target.closest(".mood-btn");
+        if (!btn) return;
+        renderPrescription(btn.dataset.mood);
+      });
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("open");
+      });
+
+      navLinks.addEventListener("click", (event) => {
+        if (event.target.tagName === "A") {
+          navLinks.classList.remove("open");
+        }
+      });
+
+      renderProjects("all");
+      renderPrescription(MOOD_PRESCRIPTIONS[0].id);
+    })();
+  </script>
+</body>
+</html>

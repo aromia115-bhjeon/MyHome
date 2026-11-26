@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>간단한 계산기</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --display-bg: #0b1220;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --btn-num: #334155;
+      --btn-num-hover: #475569;
+      --btn-fn: #475569;
+      --btn-fn-hover: #64748b;
+      --btn-op: #f59e0b;
+      --btn-op-hover: #fbbf24;
+      --btn-eq: #10b981;
+      --btn-eq-hover: #34d399;
+      --border: rgba(148, 163, 184, 0.16);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      font-family: "Pretendard", "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, var(--bg) 65%);
+      color: var(--text-main);
+    }
+
+    .calculator {
+      width: 100%;
+      max-width: 360px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .calc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      padding: 0 0.25rem;
+    }
+
+    .calc-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .calc-badge {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(148, 163, 184, 0.12);
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+    }
+
+    .display {
+      background: var(--display-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1rem 1.15rem;
+      margin-bottom: 1rem;
+      text-align: right;
+      min-height: 102px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .expression {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      min-height: 1.35rem;
+      word-break: break-all;
+    }
+
+    .result {
+      font-size: 2.35rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+
+    .result::-webkit-scrollbar {
+      display: none;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 14px;
+      height: 58px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      font-family: inherit;
+      color: var(--text-main);
+      background: var(--btn-num);
+      cursor: pointer;
+      transition: transform 0.08s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+      user-select: none;
+    }
+
+    button:hover {
+      background: var(--btn-num-hover);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button.fn {
+      background: var(--btn-fn);
+      font-size: 1.05rem;
+    }
+
+    button.fn:hover {
+      background: var(--btn-fn-hover);
+    }
+
+    button.op {
+      background: var(--btn-op);
+      color: #0f172a;
+      font-size: 1.4rem;
+    }
+
+    button.op:hover,
+    button.op.active {
+      background: var(--btn-op-hover);
+    }
+
+    button.eq {
+      background: var(--btn-eq);
+      color: #052e16;
+      font-size: 1.4rem;
+    }
+
+    button.eq:hover {
+      background: var(--btn-eq-hover);
+    }
+
+    button.zero {
+      grid-column: span 2;
+      text-align: left;
+      padding-left: 1.5rem;
+    }
+
+    .hint {
+      margin-top: 0.9rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <main class="calculator" aria-label="계산기">
+    <div class="calc-header">
+      <span class="calc-title">계산기</span>
+      <span class="calc-badge">키보드 지원</span>
+    </div>
+
+    <div class="display" role="region" aria-live="polite">
+      <div class="expression" id="expression"></div>
+      <div class="result" id="result">0</div>
+    </div>
+
+    <div class="keypad">
+      <button type="button" class="fn" data-action="clear">AC</button>
+      <button type="button" class="fn" data-action="backspace" aria-label="지우기">⌫</button>
+      <button type="button" class="fn" data-action="percent">%</button>
+      <button type="button" class="op" data-op="/">÷</button>
+
+      <button type="button" data-num="7">7</button>
+      <button type="button" data-num="8">8</button>
+      <button type="button" data-num="9">9</button>
+      <button type="button" class="op" data-op="*">×</button>
+
+      <button type="button" data-num="4">4</button>
+      <button type="button" data-num="5">5</button>
+      <button type="button" data-num="6">6</button>
+      <button type="button" class="op" data-op="-">−</button>
+
+      <button type="button" data-num="1">1</button>
+      <button type="button" data-num="2">2</button>
+      <button type="button" data-num="3">3</button>
+      <button type="button" class="op" data-op="+">+</button>
+
+      <button type="button" class="zero" data-num="0">0</button>
+      <button type="button" data-action="decimal">.</button>
+      <button type="button" class="eq" data-action="equals">=</button>
+    </div>
+
+    <p class="hint">숫자, 사칙연산(+, -, *, /), Enter, Backspace, Esc</p>
+  </main>
+
+  <script>
+    (() => {
+      const expressionEl = document.getElementById("expression");
+      const resultEl = document.getElementById("result");
+      const opButtons = document.querySelectorAll("button.op");
+
+      const OP_SYMBOL = { "+": "+", "-": "−", "*": "×", "/": "÷" };
+
+      const state = {
+        current: "0",
+        previous: null,
+        operator: null,
+        overwrite: false,
+        error: false,
+        lastExpression: ""
+      };
+
+      function formatNumber(value) {
+        if (value === "오류") return "오류";
+        const str = String(value);
+        if (str.endsWith(".")) {
+          const intPart = str.slice(0, -1);
+          return Number(intPart).toLocaleString("ko-KR") + ".";
+        }
+        const [intPart, decPart] = str.split(".");
+        const formattedInt = Number(intPart).toLocaleString("ko-KR");
+        return decPart !== undefined ? `${formattedInt}.${decPart}` : formattedInt;
+      }
+
+      function normalizeFloat(num) {
+        return Number(num.toPrecision(12));
+      }
+
+      function compute(a, b, op) {
+        if (op === "+") return normalizeFloat(a + b);
+        if (op === "-") return normalizeFloat(a - b);
+        if (op === "*") return normalizeFloat(a * b);
+        if (op === "/") {
+          if (b === 0) return null;
+          return normalizeFloat(a / b);
+        }
+        return b;
+      }
+
+      function updateDisplay() {
+        resultEl.textContent = state.error ? "오류" : formatNumber(state.current);
+
+        if (state.operator && state.previous !== null) {
+          expressionEl.textContent = `${formatNumber(state.previous)} ${OP_SYMBOL[state.operator]}`;
+        } else {
+          expressionEl.textContent = state.lastExpression;
+        }
+
+        opButtons.forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.op === state.operator && state.overwrite);
+        });
+      }
+
+      function resetAll() {
+        state.current = "0";
+        state.previous = null;
+        state.operator = null;
+        state.overwrite = false;
+        state.error = false;
+        state.lastExpression = "";
+        updateDisplay();
+      }
+
+      function inputDigit(digit) {
+        if (state.error) resetAll();
+        if (state.overwrite) {
+          state.current = digit;
+          state.overwrite = false;
+          state.lastExpression = "";
+        } else if (state.current === "0") {
+          state.current = digit;
+        } else if (state.current.replace(".", "").length < 15) {
+          state.current += digit;
+        }
+        updateDisplay();
+      }
+
+      function inputDecimal() {
+        if (state.error) resetAll();
+        if (state.overwrite) {
+          state.current = "0.";
+          state.overwrite = false;
+          state.lastExpression = "";
+        } else if (!state.current.includes(".")) {
+          state.current += ".";
+        }
+        updateDisplay();
+      }
+
+      function backspace() {
+        if (state.error) {
+          resetAll();
+          return;
+        }
+        if (state.overwrite) return;
+        if (state.current.length <= 1 || (state.current.length === 2 && state.current.startsWith("-"))) {
+          state.current = "0";
+        } else {
+          state.current = state.current.slice(0, -1);
+        }
+        updateDisplay();
+      }
+
+      function applyPercent() {
+        if (state.error) return;
+        const val = Number(state.current);
+        state.current = String(normalizeFloat(val / 100));
+        updateDisplay();
+      }
+
+      function chooseOperator(op) {
+        if (state.error) return;
+        if (state.operator && !state.overwrite) {
+          const computed = compute(Number(state.previous), Number(state.current), state.operator);
+          if (computed === null) {
+            state.error = true;
+            state.previous = null;
+            state.operator = null;
+            state.lastExpression = "0으로 나눌 수 없습니다";
+            updateDisplay();
+            return;
+          }
+          state.current = String(computed);
+        }
+        state.previous = state.current;
+        state.operator = op;
+        state.overwrite = true;
+        state.lastExpression = "";
+        updateDisplay();
+      }
+
+      function evaluate() {
+        if (state.error || !state.operator || state.previous === null) return;
+        const a = Number(state.previous);
+        const b = Number(state.current);
+        const computed = compute(a, b, state.operator);
+
+        if (computed === null) {
+          state.error = true;
+          state.previous = null;
+          state.operator = null;
+          state.lastExpression = "0으로 나눌 수 없습니다";
+          updateDisplay();
+          return;
+        }
+
+        state.lastExpression = `${formatNumber(state.previous)} ${OP_SYMBOL[state.operator]} ${formatNumber(state.current)} =`;
+        state.current = String(computed);
+        state.previous = null;
+        state.operator = null;
+        state.overwrite = true;
+        updateDisplay();
+      }
+
+      document.querySelector(".keypad").addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        if (btn.dataset.num !== undefined) inputDigit(btn.dataset.num);
+        else if (btn.dataset.op !== undefined) chooseOperator(btn.dataset.op);
+        else if (btn.dataset.action === "decimal") inputDecimal();
+        else if (btn.dataset.action === "clear") resetAll();
+        else if (btn.dataset.action === "backspace") backspace();
+        else if (btn.dataset.action === "percent") applyPercent();
+        else if (btn.dataset.action === "equals") evaluate();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key >= "0" && e.key <= "9") inputDigit(e.key);
+        else if (e.key === ".") inputDecimal();
+        else if (["+", "-", "*", "/"].includes(e.key)) {
+          e.preventDefault();
+          chooseOperator(e.key);
+        } else if (e.key === "%") applyPercent();
+        else if (e.key === "Enter" || e.key === "=") {
+          e.preventDefault();
+          evaluate();
+        } else if (e.key === "Backspace") backspace();
+        else if (e.key === "Escape" || e.key === "Delete") resetAll();
+      });
+
+      updateDisplay();
+    })();
+  </script>
+</body>
+</html>

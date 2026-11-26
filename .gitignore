@@ -1,0 +1,13 @@
+# Environment & Credentials
+.env
+.env.local
+credentials.json
+mcp_config.json
+
+# Virtual environments & Dependencies
+.venv/
+node_modules/
+
+# Caches & OS files
+__pycache__/
+.DS_Store
